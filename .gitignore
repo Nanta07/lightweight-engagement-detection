@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Dataset
+data/train/
+data/val/
+data/test/
+data/raw/
+
+# Model files
+models/*.pkl
+
+# Media
+*.jpg
+*.png
+*.mp4
+*.csv
+
+# Jupyter
+.ipynb_checkpoints/
