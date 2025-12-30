@@ -1,10 +1,6 @@
-dataset_root: "C:/Users/Ananta/Documents/.../Dataset_Daisee_Kurasi"
-
+dataset_root: "C:/Users/Ananta/Documents/1. Collage/PKL/Student Employee/DATASET_SEKUNDER/Dataset/Dataset_Sekunder/Dataset_Daisee_Kurasi"
 train_dir: "Sampled_Dataset_Train"
 val_dir: "Sampled_Dataset_Validation"
 test_dir: "Sampled_Dataset_Test"
-
-img_size: [224, 224]
 num_classes: 4
-
 model_output: "models/logistic_regression_engagement.pkl"
