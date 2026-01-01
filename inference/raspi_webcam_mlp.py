@@ -1,4 +1,4 @@
-#Using
+#Using MLP to classify engagement level from webcam feed on Raspberry Pi
 import os
 import time
 import cv2
