@@ -1,3 +1,7 @@
+#File name: inference/rev_raspi/completefunction_webcam_logreg.py
+#Complete function for Raspberry Pi webcam engagement detection using Logistic Regression model
+#!/usr/bin/env python3
+
 import os
 import time
 import cv2

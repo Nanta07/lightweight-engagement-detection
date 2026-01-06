@@ -1,3 +1,7 @@
+#File name: inference/rev_raspi/completefunction_webcam_mlp.py
+#Complete function for Raspberry Pi webcam engagement detection using MLP model
+#!/usr/bin/env python3
+
 import os
 import time
 import cv2

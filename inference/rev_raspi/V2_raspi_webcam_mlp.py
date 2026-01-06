@@ -1,3 +1,7 @@
+#File name: inference/rev_raspi/V2_raspi_webcam_mlp.py
+#Code for local testing of MLP engagement detection model
+#!/usr/bin/env python3
+
 import sys
 import time
 import cv2
