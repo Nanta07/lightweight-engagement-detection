@@ -18,8 +18,8 @@ confidence_list = []
 # ===============================
 # CONFIG
 # ===============================
-MODEL_PATH  = "models/mlp_engagement_final.pkl"
-SCALER_PATH = "models/scaler_mlp_engagement_final.pkl"
+MODEL_PATH  = "models/v2_mlp_engagement.pkl"
+SCALER_PATH = "models/v2_scaler_mlp_engagement.pkl"
 
 RAW_FEATURES = 936
 TARGET_FPS = 4
