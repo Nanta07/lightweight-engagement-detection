@@ -6,9 +6,7 @@ import numpy as np
 import joblib
 from collections import Counter
 
-# =====================================================
 # CONFIG
-# =====================================================
 MODEL_PATH  = "models/v2_mlp_engagement.pkl"
 SCALER_PATH = "models/v2_scaler_mlp_engagement.pkl"
 
@@ -20,17 +18,13 @@ SIDEBAR_W = 300
 MIN_WINDOW_W = 900
 MIN_WINDOW_H = 500
 
-FONT = cv2.FONT_HERSHEY_DUPLEX   # ← PALING AMAN & ENAK (tanpa install)
+FONT = cv2.FONT_HERSHEY_DUPLEX  
 
-# =====================================================
 # SESSION STORAGE
-# =====================================================
 engagement_counter = Counter()
 confidence_list = []
 
-# =====================================================
 # FEATURE EXTRACTOR (LOCKED)
-# =====================================================
 def extract_features(frame):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     resized = cv2.resize(gray, (36, 26))
@@ -39,9 +33,7 @@ def extract_features(frame):
         raise ValueError("Feature size mismatch")
     return features
 
-# =====================================================
 # ASPECT RATIO SAFE RESIZE
-# =====================================================
 def resize_with_aspect_ratio(frame, target_w, target_h):
     h, w = frame.shape[:2]
     scale = min(target_w / w, target_h / h)
@@ -58,9 +50,6 @@ def resize_with_aspect_ratio(frame, target_w, target_h):
 
     return canvas
 
-# =====================================================
-# SIDEBAR UI
-# =====================================================
 def draw_sidebar(panel, pred, conf, fps):
     panel[:] = (30, 30, 30)
 
@@ -102,9 +91,7 @@ def draw_sidebar(panel, pred, conf, fps):
     cv2.putText(panel, "Press Q to Stop", (15, panel.shape[0] - 20),
                 FONT, 0.6, (180, 180, 180), 1)
 
-# =====================================================
 # FINAL REPORT SCREEN
-# =====================================================
 def show_final_report(counter, confidences):
     screen = np.zeros((500, 900, 3), dtype=np.uint8)
     screen[:] = (30, 30, 30)
@@ -142,15 +129,11 @@ def show_final_report(counter, confidences):
         if cv2.waitKey(10) == 27:
             break
 
-# =====================================================
 # LOAD MODEL
-# =====================================================
 model = joblib.load(MODEL_PATH)
 scaler = joblib.load(SCALER_PATH)
 
-# =====================================================
 # CAMERA INIT
-# =====================================================
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     sys.exit("[ERROR] Camera not opened")
@@ -161,9 +144,7 @@ cv2.resizeWindow("Engagement Detection - MLP", 1000, 600)
 last_time = 0
 pred, conf = 0, 0.0
 
-# =====================================================
 # MAIN LOOP
-# =====================================================
 while True:
     ret, frame = cap.read()
     if not ret:
