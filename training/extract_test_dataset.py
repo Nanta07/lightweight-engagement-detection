@@ -1,4 +1,4 @@
-# training/extract_dataset.py
+# training/extract_test_dataset.py
 import os
 import numpy as np
 from tqdm import tqdm
