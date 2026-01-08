@@ -1,6 +1,0 @@
-C:/Users/Ananta/Documents/1. Collage/PKL/Student Employee/DATASET_SEKUNDER/Dataset/Dataset_Sekunder/Dataset_Daisee_Kurasi\Sampled_Dataset_Validation\engagement_0\4100302042_frame_0051.jpg
-C:/Users/Ananta/Documents/1. Collage/PKL/Student Employee/DATASET_SEKUNDER/Dataset/Dataset_Sekunder/Dataset_Daisee_Kurasi\Sampled_Dataset_Validation\engagement_0\5674960283_frame_0050.jpg
-C:/Users/Ananta/Documents/1. Collage/PKL/Student Employee/DATASET_SEKUNDER/Dataset/Dataset_Sekunder/Dataset_Daisee_Kurasi\Sampled_Dataset_Validation\engagement_0\5674960283_frame_0051.jpg
-C:/Users/Ananta/Documents/1. Collage/PKL/Student Employee/DATASET_SEKUNDER/Dataset/Dataset_Sekunder/Dataset_Daisee_Kurasi\Sampled_Dataset_Validation\engagement_0\5674960283_frame_0058.jpg
-C:/Users/Ananta/Documents/1. Collage/PKL/Student Employee/DATASET_SEKUNDER/Dataset/Dataset_Sekunder/Dataset_Daisee_Kurasi\Sampled_Dataset_Validation\engagement_0\5674960283_frame_0059.jpg
-C:/Users/Ananta/Documents/1. Collage/PKL/Student Employee/DATASET_SEKUNDER/Dataset/Dataset_Sekunder/Dataset_Daisee_Kurasi\Sampled_Dataset_Validation\engagement_0\5674960283_frame_0060.jpg
