@@ -1,7 +1,4 @@
-# ============================================================
-# FINAL MLP TRAINING PIPELINE v2.1 (RASPBERRY PI READY)
-# ============================================================
-
+#training/Version 2_1/final_mlp_training.py
 import os
 import numpy as np
 import joblib

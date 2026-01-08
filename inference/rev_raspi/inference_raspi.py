@@ -15,8 +15,8 @@ from tkinter import simpledialog, messagebox
 from tkcalendar import Calendar
 
 # CONFIGURATION
-BASE_DIR = "processed_data_v2_1"
-BASE_SESSION_DIR = r"C:\Users\Ananta\Documents\GitHub\lightweight-engagement-detection\data_sessions"
+BASE_DIR = "processed_data_v2_1" #Lokasi modle, scaler, dan pca
+BASE_SESSION_DIR = r"lokasi folder data sessions"
 
 SCALER_PATH = f"{BASE_DIR}/preprocess/scaler.pkl"
 PCA_PATH    = f"{BASE_DIR}/preprocess/pca.pkl"
