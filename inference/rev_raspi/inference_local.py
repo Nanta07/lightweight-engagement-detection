@@ -13,6 +13,7 @@ from collections import Counter, deque
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 from tkcalendar import Calendar
+import datetime
 
 # CONFIGURATION
 BASE_DIR = "processed_data_v2_1"
@@ -94,6 +95,15 @@ for i in range(4):
     os.makedirs(os.path.join(engagement_dir, str(i)), exist_ok=True)
 
 csv_path = os.path.join(session_root, "engagement_results.csv")
+# === OUTPUT FIX ===
+csv_file = open(csv_path, "w", newline="")
+csv_writer = csv.writer(csv_file)
+csv_writer.writerow([
+    "Timestamp", "Time", "Frame",
+    "Engagement Level", "Confidence",
+    "Response Time", "FPS"
+])
+
 video_path = os.path.join(session_root, "session_video.mp4")
 
 with open(csv_path, "w", newline="") as f:
@@ -223,6 +233,9 @@ confidence_list = []
 
 last_time = 0
 pred, conf = 0, 0.0
+# === OUTPUT FIX ===
+frame_id = 0
+session_start = time.time()
 
 while True:
     ret, frame = cap.read()
@@ -244,8 +257,36 @@ while True:
             pred = Counter(pred_buffer).most_common(1)[0][0]
             conf = raw_conf
 
+            # === OUTPUT FIX (URUTAN BENAR) ===
+            timestamp_ms = int(now * 1000)
+            time_str = time.strftime("%H:%M:%S", time.localtime(now))
+            frame_name = f"frame_{timestamp_ms}.jpg"
+
+            start_infer = time.time()
+
+            cv2.imwrite(
+                os.path.join(engagement_dir, str(pred), frame_name),
+                frame
+            )
+
+            response_time = time.time() - start_infer
+            fps_actual = 1.0 / response_time if response_time > 0 else 0.0
+
+            csv_writer.writerow([
+                timestamp_ms,
+                time_str,
+                frame_name,
+                pred,
+                round(conf, 4),
+                round(response_time, 4),
+                round(fps_actual, 2)
+            ])
+
+            frame_id += 1
+
             engagement_counter[pred] += 1
             confidence_list.append(conf)
+
 
     fps = 1.0 / PROCESS_INTERVAL
 
@@ -265,6 +306,9 @@ cap.release()
 video_writer.release()
 cv2.destroyAllWindows()
 face_mesh.close()
+
+# === OUTPUT FIX ===
+csv_file.close()
 
 show_final_report(engagement_counter, confidence_list)
 
