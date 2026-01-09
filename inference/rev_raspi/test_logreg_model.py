@@ -52,7 +52,8 @@ def pick_date_with_calendar():
 print("\n=== ENGAGEMENT SESSION SETUP ===")
 SESSION_DATE = pick_date_with_calendar() or time.strftime("%Y-%m-%d")
 SESSION_NAME = input("Enter participant name       : ").strip() or "Unknown"
-SESSION_NOTE = input("Enter session label/name     : ").strip() or "Session"
+SESSION_NOTE = input("Enter session " \
+"label/name     : ").strip() or "Session"
 
 print("\n[INFO] Session Initialized")
 print(f" Date        : {SESSION_DATE}")

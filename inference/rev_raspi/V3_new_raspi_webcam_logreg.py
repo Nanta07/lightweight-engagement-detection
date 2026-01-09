@@ -93,7 +93,6 @@ def draw_sidebar(panel, pred, conf, fps):
                 FONT, 0.6, (180,180,180), 1)
 
 # FINAL REPORT
- 
 def show_final_report(counter, confs, fps_list, rt_list):
     screen = np.zeros((540, 900, 3), dtype=np.uint8)
     screen[:] = (30,30,30)
@@ -141,14 +140,12 @@ def show_final_report(counter, confs, fps_list, rt_list):
 
  
 # LOAD PIPELINE
- 
 model  = joblib.load(MODEL_PATH)
 scaler = joblib.load(SCALER_PATH)
 pca    = joblib.load(PCA_PATH)
 
  
 # CAMERA & VIDEO
- 
 cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
 if not ret:
@@ -165,7 +162,6 @@ video_writer = cv2.VideoWriter(
 
  
 # CSV
-
 csv_file = open(CSV_PATH, "w", newline="")
 csv_writer = csv.writer(csv_file)
 csv_writer.writerow([

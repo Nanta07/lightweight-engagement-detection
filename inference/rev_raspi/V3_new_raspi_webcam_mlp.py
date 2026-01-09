@@ -1,3 +1,13 @@
+# Updated Code is on ignore.py 
+
+#Jumlah detection jangan terlalu banyak permenitnya saat in jumlah pengambilan selama 9 menit mendapatkan kurang lebih 1927 frame gambar (harus diperkecilagi agar ideal). Misal nanti perlu dibuat sesi untuk testing selama 1 menit persesi
+#untuk session info ditambahkan lagi untuk date participant name, session keberapa, start dan end time. dan juga hasil dari evaluasi dari model selama sesi engagement yang telah dilakukan
+# Total 5 sesi untuk setiap engagement level. Untuk setiap sesi selama 1 menit. Misal engagement 0, maka akan memeperagakan engagement level 0 dengan kondisi tertentu dan bermacam-macam pose. Tapi bagian ini hiraukan saja terlebih dahulu karena nanti setiap sesinya akan distop secara manual oleh pengguna
+# Penyimpanan video perdurasi juga perlu dikurangi agar tidak terlalu besar, misal durasi 2/3 dari total sesi pengambilan data
+# Berikan FPS yang ideal untuk pengambilan data dari sesi. Pertimbangkan yang ideal seberapa
+# Buatkan tampilan UI sebelum menjalankan sesi pengambilan data dari user seperti data, nama dan sesi keberapa. Jadi lebih memudahkan untuk diinput oleh pengguna
+# Berikan code final yang sudah fix, jangan ubah pada bagian yang tidak saya minta. INI SANGAT PENTING
+
 #!/usr/bin/env python3
 import sys
 import os

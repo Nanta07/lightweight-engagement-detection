@@ -1,4 +1,4 @@
-# training/train_logreg_raspi_final.py
+#train_logreg_raspi_pkl.py
 import os
 import numpy as np
 from collections import Counter
