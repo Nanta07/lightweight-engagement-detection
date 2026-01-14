@@ -9,9 +9,7 @@ from sklearn.metrics import classification_report, confusion_matrix, balanced_ac
 from sklearn.utils import resample
 import joblib
 
-# -----------------------------
 # Load processed data
-# -----------------------------
 DATA_DIR = os.path.join(os.getcwd(), "processed_data")
 X_train = np.load(os.path.join(DATA_DIR, "X_train.npy"))
 y_train = np.load(os.path.join(DATA_DIR, "y_train.npy"))
@@ -24,17 +22,13 @@ print("TRAIN distribution:", Counter(y_train))
 print("VAL distribution:", Counter(y_val))
 print("TEST distribution:", Counter(y_test))
 
-# -----------------------------
 # Feature scaling
-# -----------------------------
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_val_scaled = scaler.transform(X_val)
 X_test_scaled = scaler.transform(X_test)
 
-# -----------------------------
 # Dimensionality reduction (optional)
-# -----------------------------
 pca_dim = 64  # tweakable, RasPi-friendly
 pca = PCA(n_components=pca_dim, random_state=42)
 X_train_pca = pca.fit_transform(X_train_scaled)
@@ -42,9 +36,7 @@ X_val_pca = pca.transform(X_val_scaled)
 X_test_pca = pca.transform(X_test_scaled)
 print(f"[INFO] PCA output dim: {X_train_pca.shape[1]}")
 
-# -----------------------------
 # Optional: Oversampling minor classes
-# -----------------------------
 # Uncomment if minor classes are extremely underrepresented
 # from sklearn.utils import resample
 # X_train_combined = np.hstack((X_train_pca, y_train.reshape(-1,1)))
@@ -56,15 +48,13 @@ print(f"[INFO] PCA output dim: {X_train_pca.shape[1]}")
 # X_train_pca = df_balanced.iloc[:, :-1].values
 # y_train = df_balanced.iloc[:, -1].astype(int).values
 
-# -----------------------------
 # Logistic Regression (Improved)
-# -----------------------------
 clf = LogisticRegression(
     max_iter=300,
     solver='saga',           # RasPi-friendly, supports multinomial
     multi_class='multinomial',
     class_weight='balanced',  # important for imbalance
-    C=0.5,                    # tweakable regularization
+    C=0.5,    
     n_jobs=-1,
     tol=1e-3,
     random_state=42
@@ -73,9 +63,7 @@ clf = LogisticRegression(
 print("\n[TRAINING] Logistic Regression...")
 clf.fit(X_train_pca, y_train)
 
-# -----------------------------
 # Evaluate
-# -----------------------------
 def evaluate(model, X, y, dataset_name="Dataset"):
     y_pred = model.predict(X)
     print(f"\n=== {dataset_name} RESULTS ===")
@@ -86,9 +74,7 @@ def evaluate(model, X, y, dataset_name="Dataset"):
 evaluate(clf, X_val_pca, y_val, "VALIDATION")
 evaluate(clf, X_test_pca, y_test, "TEST")
 
-# -----------------------------
 # Save model, scaler, PCA
-# -----------------------------
 os.makedirs(DATA_DIR, exist_ok=True)
 joblib.dump(clf, os.path.join(DATA_DIR, "v3_logreg_engagement.pkl"))
 joblib.dump(scaler, os.path.join(DATA_DIR, "v3_scaler_engagement.pkl"))

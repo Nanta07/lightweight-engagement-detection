@@ -1,6 +1,6 @@
 #train_mlp_raspi_pkl.py
 
-# FINAL BEST MLP TRAINING (Raspberry Pi Compatible)
+# FINAL BEST MLP TRAINING
 import os
 import numpy as np
 import joblib
@@ -11,7 +11,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import classification_report, confusion_matrix, balanced_accuracy_score
 from sklearn.utils.class_weight import compute_sample_weight
 
-# Load dataset (.npy – SESUAI PROJECT)
+# Load dataset
 DATA_DIR = "processed_data"
 
 X_train = np.load(os.path.join(DATA_DIR, "X_train.npy"))
@@ -39,9 +39,9 @@ sample_weight = compute_sample_weight(
     y=y_train
 )
 
-# BEST MLP CONFIG (HASIL TERBAIK SEPANJANG EKSPERIMEN)
+# BEST MLP CONFIG
 mlp = MLPClassifier(
-    hidden_layer_sizes=(64,),     # 1 layer = paling stabil
+    hidden_layer_sizes=(64,),
     activation="relu",
     solver="adam",
     alpha=0.001,
