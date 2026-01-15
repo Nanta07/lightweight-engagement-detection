@@ -1,6 +1,4 @@
-#train_mlp_raspi_pkl.py
-
-# FINAL BEST MLP TRAINING
+#Name: train_mlp_raspi_pkl.py
 import os
 import numpy as np
 import joblib
