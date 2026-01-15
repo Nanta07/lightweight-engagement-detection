@@ -17,6 +17,9 @@ DATA_DIR = "processed_data"
 X_train = np.load(os.path.join(DATA_DIR, "X_train.npy"))
 y_train = np.load(os.path.join(DATA_DIR, "y_train.npy"))
 
+
+
+
 X_val = np.load(os.path.join(DATA_DIR, "X_val.npy"))
 y_val = np.load(os.path.join(DATA_DIR, "y_val.npy"))
 
