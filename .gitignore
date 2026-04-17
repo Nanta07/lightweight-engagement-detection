@@ -4,11 +4,21 @@ __pycache__/
 .venv/
 venv/
 
-# Dataset
+# Custom Virtual Environments
+venv_engagement/
+venv_mlp/
+venv310/
+
+# Dataset & Processed Data
 data/train/
 data/val/
 data/test/
 data/raw/
+processed_data/
+processed_data_v2_1/
+
+# Training
+training/
 
 # Model files
 models/*.pkl

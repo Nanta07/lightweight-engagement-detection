@@ -11,7 +11,7 @@ from collections import Counter
 engagement_counter = Counter()
 confidence_list = []
 
-print("[INFO] RasPi Engagement Detection - Logistic Regression")
+print("STEP 1: Script started")
 
 # ===============================
 # CONFIG
@@ -20,28 +20,25 @@ MODEL_PATH  = "models/v3_logreg_engagement.pkl"
 SCALER_PATH = "models/v3_scaler_engagement.pkl"
 PCA_PATH    = "models/v3_pca_engagement.pkl"
 
-RAW_FEATURES = 936
-PCA_FEATURES = 64
+RAW_FEATURES = 936   # before PCA
+PCA_FEATURES = 64    # after PCA
 
-# RasPi performance control
-TARGET_FPS = 4                  # inference FPS
+TARGET_FPS = 5
 PROCESS_INTERVAL = 1.0 / TARGET_FPS
 
-CAMERA_WIDTH  = 320
-CAMERA_HEIGHT = 240
-
-print(f"[CONFIG] Target inference FPS: {TARGET_FPS}")
+print("STEP 2: Config loaded")
+print(f"Target FPS: {TARGET_FPS}")
 
 # ===============================
-# FEATURE EXTRACTOR (LOCKED)
+# FEATURE EXTRACTOR
 # ===============================
 def extract_features(frame):
     """
-    MUST be identical to training & local test
-    Output: 936 features
+    Feature extractor
+    MUST match training features (936)
     """
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    resized = cv2.resize(gray, (36, 26))  # 36 × 26 = 936
+    resized = cv2.resize(gray, (36, 26))  # 36 x 26 = 936
     features = resized.flatten().astype(np.float32)
 
     if features.shape[0] != RAW_FEATURES:
@@ -50,35 +47,37 @@ def extract_features(frame):
     return features
 
 # ===============================
-# LOAD PIPELINE
+# LOAD MODEL PIPELINE
 # ===============================
-print("[LOAD] Logistic Regression model")
+print("STEP 3: Loading model")
 model = joblib.load(MODEL_PATH)
 
-print("[LOAD] Scaler")
+print("STEP 4: Loading scaler")
 scaler = joblib.load(SCALER_PATH)
 
-print("[LOAD] PCA")
+print("STEP 5: Loading PCA")
 pca = joblib.load(PCA_PATH)
 
-print("[OK] Pipeline loaded")
-print("[INFO] Model expects PCA features:", model.n_features_in_)
+print("STEP 6: Pipeline loaded successfully")
+print("Model expects PCA features:", model.n_features_in_)
 
 # ===============================
 # CAMERA INIT
 # ===============================
 cap = cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, CAMERA_WIDTH)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, CAMERA_HEIGHT)
-
 if not cap.isOpened():
-    print("[ERROR] Camera not opened")
+    print("ERROR: Camera not opened")
     sys.exit(1)
 
-print("[OK] Camera opened")
+print("STEP 7: Camera opened")
 
+# ===============================
+# FPS CONTROL
+# ===============================
 last_process_time = 0
 display_text = "Initializing..."
+
+print("STEP 8: Entering main loop")
 
 # ===============================
 # MAIN LOOP
@@ -86,14 +85,16 @@ display_text = "Initializing..."
 while True:
     ret, frame = cap.read()
     if not ret:
-        print("[ERROR] Frame read failed")
+        print("ERROR: Frame not read")
         break
 
-    now = time.time()
+    current_time = time.time()
 
-    # === CONTROLLED INFERENCE RATE ===
-    if now - last_process_time >= PROCESS_INTERVAL:
-        last_process_time = now
+    # ===============================
+    # PROCESS FRAME (FPS CONTROLLED)
+    # ===============================
+    if current_time - last_process_time >= PROCESS_INTERVAL:
+        last_process_time = current_time
 
         # 1️⃣ Feature extraction
         features = extract_features(frame).reshape(1, -1)
@@ -106,37 +107,33 @@ while True:
 
         # 4️⃣ Prediction
         pred = int(model.predict(features_pca)[0])
+        prob = model.predict_proba(features_pca)
+        confidence = float(np.max(prob))
 
-        if hasattr(model, "predict_proba"):
-            confidence = float(np.max(model.predict_proba(features_pca)))
-        else:
-            confidence = 0.0
-
-        # Store session statistics
+        # Store session stats
         engagement_counter[pred] += 1
         confidence_list.append(confidence)
 
-        display_text = f"Eng: {pred} | Conf: {confidence:.2f}"
-
-        print(f"[PRED] class={pred}, conf={confidence:.3f}")
+        display_text = f"Engagement: {pred} | Conf: {confidence:.2f}"
+        print(f"PREDICT → class={pred}, confidence={confidence:.3f}")
 
     # ===============================
-    # VISUAL DISPLAY
+    # VISUAL OUTPUT
     # ===============================
     cv2.putText(
         frame,
         display_text,
-        (10, 30),
+        (10, 35),
         cv2.FONT_HERSHEY_SIMPLEX,
-        0.8,
+        0.9,
         (0, 255, 0),
         2
     )
 
-    cv2.imshow("RasPi Engagement - LOGREG", frame)
+    cv2.imshow("ENGAGEMENT DETECTION (RASPI READY)", frame)
 
     if cv2.waitKey(1) & 0xFF == ord("q"):
-        print("[INFO] Exit requested")
+        print("STOP requested by user")
         break
 
 # ===============================
@@ -147,7 +144,7 @@ def print_session_summary(counter, confidences):
 
     total = sum(counter.values())
     if total == 0:
-        print("No predictions made.")
+        print("No valid engagement detected.")
         return
 
     for level in sorted(counter.keys()):
@@ -155,8 +152,11 @@ def print_session_summary(counter, confidences):
         percent = (count / total) * 100
         print(f"Engagement {level}: {count} frames ({percent:.2f}%)")
 
-    low  = counter.get(0, 0) + counter.get(1, 0)
+    low = counter.get(0, 0) + counter.get(1, 0)
     high = counter.get(2, 0) + counter.get(3, 0)
+
+    print("\nLow Engagement Frames :", low)
+    print("High Engagement Frames:", high)
 
     conclusion = "HIGH ENGAGEMENT" if high > low else "LOW ENGAGEMENT"
     avg_conf = sum(confidences) / len(confidences)
@@ -165,11 +165,11 @@ def print_session_summary(counter, confidences):
     print(f"Session Engagement Level : {conclusion}")
     print(f"Average Confidence       : {avg_conf:.3f}")
 
-print_session_summary(engagement_counter, confidence_list)
-
 # ===============================
 # CLEANUP
 # ===============================
 cap.release()
 cv2.destroyAllWindows()
-print("[DONE] Program finished")
+
+print_session_summary(engagement_counter, confidence_list)
+print("STEP 9: Finished")
